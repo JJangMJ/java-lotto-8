@@ -2,6 +2,7 @@ package lotto.domain.lottoMachine;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.Test;
 
 public class LottoPurchaseAmountTest {
