@@ -12,7 +12,7 @@ public class LottoMachineController {
     public void run() {
         while (true) {
             try {
-                String lottoPurchasePrice = inputView.inputLottoPurchasePrice();
+                String purchaseAmount = inputView.inputLottoPurchasePrice();
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }
