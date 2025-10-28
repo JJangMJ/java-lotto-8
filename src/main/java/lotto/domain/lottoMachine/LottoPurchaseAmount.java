@@ -18,6 +18,10 @@ public class LottoPurchaseAmount {
         return new LottoPurchaseAmount(purchaseAmount);
     }
 
+    public int value() {
+        return value();
+    }
+
     private static void validateBlank(String value) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(ErrorMessage.PURCHASE_AMOUNT_CANNOT_BE_BLANK.getMessage());

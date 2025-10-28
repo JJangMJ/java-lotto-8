@@ -10,10 +10,10 @@ public class LottoMachineTest {
     @Test
     void 구입_금액을_기준으로_발행할_로또의_수량을_계산한다() {
         //given
-        int lottoPurchasePrice = 8000;
+        LottoPurchaseAmount purchaseAmount = LottoPurchaseAmount.from("8000");
 
         //when
-        LottoMachine lottoMachine = new LottoMachine(lottoPurchasePrice);
+        LottoMachine lottoMachine = new LottoMachine(purchaseAmount);
         List<Lotto> lottos = lottoMachine.generateLottos();
 
         //then
