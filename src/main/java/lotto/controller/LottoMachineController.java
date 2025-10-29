@@ -1,10 +1,9 @@
 package lotto.controller;
 
-import java.util.List;
-import lotto.domain.Lotto;
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoPurchaseAmount;
 import lotto.domain.RandomLottoNumberGenerator;
+import lotto.dto.LottoPurchaseResult;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
@@ -31,7 +30,7 @@ public class LottoMachineController {
         LottoPurchaseAmount purchaseAmount = LottoPurchaseAmount.from(inputView.inputLottoPurchasePrice());
         RandomLottoNumberGenerator randomLottoNumberGenerator = new RandomLottoNumberGenerator();
         LottoMachine lottoMachine = new LottoMachine(purchaseAmount, randomLottoNumberGenerator);
-        List<Lotto> purchasedLottos = lottoMachine.generateLottos();
-        outputView.printPurchasedLottos(purchaseAmount, purchasedLottos);
+        LottoPurchaseResult lottoPurchaseResult = lottoMachine.generateLottos();
+        outputView.printPurchasedLottos(lottoPurchaseResult);
     }
 }
