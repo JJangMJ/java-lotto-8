@@ -12,6 +12,11 @@ public class Parser {
         return parseStringToInteger(splitString);
     }
 
+    public static int parseBonusNumber(String input) {
+        validateBlank(input);
+        return validateParseToInt(input);
+    }
+
     private static List<Integer> parseStringToInteger(List<String> parseString) {
         return parseString.stream()
                 .map(Parser::validateParseToInt)

@@ -23,7 +23,8 @@ public class LottoMachineController {
         while (true) {
             try {
                 purchaseLottos();
-                generateWinningNumbers();
+                WinningNumbers winningNumbers = generateWinningNumbers();
+                generateBonusNumber();
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }
@@ -38,8 +39,12 @@ public class LottoMachineController {
         outputView.printPurchasedLottos(lottoPurchaseResult);
     }
 
-    private void generateWinningNumbers() {
+    private WinningNumbers generateWinningNumbers() {
         List<Integer> numbers = Parser.parseWinningNumbers(inputView.inputWinningNumbers());
-        new WinningNumbers(numbers);
+        return new WinningNumbers(numbers);
+    }
+
+    private void generateBonusNumber() {
+        Parser.parseBonusNumber(inputView.inputBonusNumber());
     }
 }
