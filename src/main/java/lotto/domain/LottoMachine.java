@@ -6,16 +6,17 @@ import java.util.stream.IntStream;
 public class LottoMachine {
     private static final int ONE_LOTTO_PRICE = 1000;
     private final LottoPurchaseAmount purchaseAmount;
+    private final LottoNumberGenerator lottoNumberGenerator;
 
-    public LottoMachine(LottoPurchaseAmount purchaseAmount) {
+    public LottoMachine(LottoPurchaseAmount purchaseAmount, LottoNumberGenerator lottoNumberGenerator) {
         this.purchaseAmount = purchaseAmount;
+        this.lottoNumberGenerator = lottoNumberGenerator;
     }
 
     public List<Lotto> generateLottos() {
         int purchaseCount = purchaseAmount.value() / ONE_LOTTO_PRICE;
-        List<Integer> numbers = List.of(1,2,3,4,5,6);
         return IntStream.range(0, purchaseCount)
-                .mapToObj(i -> new Lotto(numbers))
+                .mapToObj(index -> new Lotto(lottoNumberGenerator.generate()))
                 .toList();
     }
 }
