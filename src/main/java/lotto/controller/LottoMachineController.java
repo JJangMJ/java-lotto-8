@@ -2,7 +2,7 @@ package lotto.controller;
 
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoPurchaseAmount;
-import lotto.domain.RandomLottoNumberGenerator;
+import lotto.domain.generator.RandomLottoNumberGenerator;
 import lotto.dto.LottoPurchaseResult;
 import lotto.view.InputView;
 import lotto.view.OutputView;

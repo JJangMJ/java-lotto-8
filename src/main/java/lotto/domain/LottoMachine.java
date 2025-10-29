@@ -2,6 +2,7 @@ package lotto.domain;
 
 import java.util.List;
 import java.util.stream.IntStream;
+import lotto.domain.generator.LottoNumberGenerator;
 import lotto.dto.LottoPurchaseResult;
 
 public class LottoMachine {
