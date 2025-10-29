@@ -20,6 +20,7 @@ public class LottoMachineController {
         while (true) {
             try {
                 purchaseLottos();
+                generateWinningNumbers();
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }
@@ -32,5 +33,9 @@ public class LottoMachineController {
         LottoMachine lottoMachine = new LottoMachine(purchaseAmount, randomLottoNumberGenerator);
         LottoPurchaseResult lottoPurchaseResult = lottoMachine.generateLottos();
         outputView.printPurchasedLottos(lottoPurchaseResult);
+    }
+
+    private void generateWinningNumbers() {
+        inputView.inputWinningNumbers().split(",");
     }
 }
