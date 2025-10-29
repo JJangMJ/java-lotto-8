@@ -1,7 +1,10 @@
 package lotto.controller;
 
+import java.util.List;
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoPurchaseAmount;
+import lotto.domain.Parser;
+import lotto.domain.WinningNumbers;
 import lotto.domain.generator.RandomLottoNumberGenerator;
 import lotto.dto.LottoPurchaseResult;
 import lotto.view.InputView;
@@ -36,6 +39,7 @@ public class LottoMachineController {
     }
 
     private void generateWinningNumbers() {
-        inputView.inputWinningNumbers().split(",");
+        List<Integer> numbers = Parser.parseWinningNumbers(inputView.inputWinningNumbers());
+        new WinningNumbers(numbers);
     }
 }
