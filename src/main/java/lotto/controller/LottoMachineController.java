@@ -6,28 +6,32 @@ import lotto.domain.LottoMachine;
 import lotto.domain.LottoPurchaseAmount;
 import lotto.domain.RandomLottoNumberGenerator;
 import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class LottoMachineController {
     private final InputView inputView;
+    private final OutputView outputView;
 
-    public LottoMachineController(InputView inputView) {
+    public LottoMachineController(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
+        this.outputView = outputView;
     }
 
     public void run() {
         while (true) {
             try {
-                List<Lotto> purchasedLottos = purchaseLottos();
+                purchaseLottos();
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }
         }
     }
 
-    private List<Lotto> purchaseLottos() {
+    private void purchaseLottos() {
         LottoPurchaseAmount purchaseAmount = LottoPurchaseAmount.from(inputView.inputLottoPurchasePrice());
         RandomLottoNumberGenerator randomLottoNumberGenerator = new RandomLottoNumberGenerator();
         LottoMachine lottoMachine = new LottoMachine(purchaseAmount, randomLottoNumberGenerator);
-        return lottoMachine.generateLottos();
+        List<Lotto> purchasedLottos = lottoMachine.generateLottos();
+        outputView.printPurchasedLottos(purchaseAmount, purchasedLottos);
     }
 }

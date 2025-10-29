@@ -19,7 +19,7 @@ public class LottoPurchaseAmount {
     }
 
     public int value() {
-        return value();
+        return purchaseAmount;
     }
 
     private static void validateBlank(String value) {
