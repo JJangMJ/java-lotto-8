@@ -1,8 +1,7 @@
-package lotto.domain.lottoMachine;
+package lotto.domain;
 
 import java.util.List;
 import java.util.stream.IntStream;
-import lotto.domain.lotto.Lotto;
 
 public class LottoMachine {
     private static final int ONE_LOTTO_PRICE = 1000;

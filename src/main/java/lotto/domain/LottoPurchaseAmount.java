@@ -1,4 +1,4 @@
-package lotto.domain.lottoMachine;
+package lotto.domain;
 
 import lotto.exception.ErrorMessage;
 

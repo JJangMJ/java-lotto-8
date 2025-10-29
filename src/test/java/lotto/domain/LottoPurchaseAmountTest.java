@@ -1,11 +1,11 @@
-package lotto.domain.lottoMachine;
+package lotto.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.Test;
 
-public class LottoPurchaseAmountTest {
+class LottoPurchaseAmountTest {
     @Test
     void 로또_구입_금액이_공백이면_예외_처리한다() {
         assertThatThrownBy(() -> LottoPurchaseAmount.from(" "))
