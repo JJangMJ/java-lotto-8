@@ -2,8 +2,8 @@ package lotto.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import lotto.domain.generator.RandomLottoNumberGenerator;
+import lotto.dto.LottoPurchaseResult;
 import org.junit.jupiter.api.Test;
 
 class LottoMachineTest {
@@ -15,9 +15,9 @@ class LottoMachineTest {
 
         //when
         LottoMachine lottoMachine = new LottoMachine(purchaseAmount, lottoNumberGenerator);
-        List<Lotto> lottos = lottoMachine.generateLottos();
+        LottoPurchaseResult lottos = lottoMachine.generateLottos();
 
         //then
-        assertThat(lottos).hasSize(8);
+        assertThat(lottos.purchasedLottos()).hasSize(8);
     }
 }
