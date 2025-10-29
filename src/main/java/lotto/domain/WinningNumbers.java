@@ -11,17 +11,10 @@ public class WinningNumbers {
     private final List<Integer> numbers;
 
     public WinningNumbers(List<Integer> numbers) {
-        validateBlank(numbers);
         validateNumberCount(numbers);
         validateNumbersRange(numbers);
         validateDuplicateNumber(numbers);
         this.numbers = numbers;
-    }
-
-    private void validateBlank(List<Integer> numbers) {
-        if (numbers == null || numbers.isEmpty()) {
-            throw new IllegalArgumentException(ErrorMessage.WINNING_NUMBERS_CANNOT_BE_BLANK.getMessage());
-        }
     }
 
     private void validateNumberCount(List<Integer> numbers) {

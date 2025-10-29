@@ -7,6 +7,7 @@ public class Parser {
     private static final String DELIMITER = ",";
 
     public static List<Integer> parseWinningNumbers(String input) {
+        validateBlank(input);
         List<String> splitString = List.of(input.split(DELIMITER));
         return parseStringToInteger(splitString);
     }
@@ -22,6 +23,12 @@ public class Parser {
             return Integer.parseInt(input);
         } catch (IllegalArgumentException exception) {
             throw new IllegalArgumentException(ErrorMessage.WINNING_NUMBERS_SHOULD_BE_NUMBER.getMessage());
+        }
+    }
+
+    private static void validateBlank(String input) {
+        if (input == null || input.isBlank()) {
+            throw new IllegalArgumentException(ErrorMessage.WINNING_NUMBERS_CANNOT_BE_BLANK.getMessage());
         }
     }
 }
