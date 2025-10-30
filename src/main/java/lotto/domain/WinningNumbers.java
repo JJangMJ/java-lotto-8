@@ -1,7 +1,11 @@
 package lotto.domain;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import lotto.dto.LottoPurchaseResult;
 import lotto.exception.ErrorMessage;
 
 public class WinningNumbers {
@@ -17,14 +21,33 @@ public class WinningNumbers {
         this.numbers = numbers;
     }
 
-    public int countMatches(List<Integer> lottoNumbers) {
+    public boolean contains(int number) {
+        return numbers.contains(number);
+    }
+
+    public Map<Rank, Integer> getRankResults(LottoPurchaseResult lottoPurchaseResult, BonusNumber bonusNumber) {
+        Map<Rank, Integer> rankResults = initializeRankResults();
+        lottoPurchaseResult.purchasedLottos()
+                .forEach(purchasedLotto -> {
+                    int matchCount = countMatches(purchasedLotto.getNumbers());
+                    boolean hasBonusNumber = contains(bonusNumber.getNumber());
+                    Rank rank = Rank.calculateRank(matchCount, hasBonusNumber);
+                    rankResults.put(rank, rankResults.get(rank) + 1);
+                });
+        return rankResults;
+    }
+
+    private Map<Rank, Integer> initializeRankResults() {
+        Map<Rank, Integer> rankResults = new HashMap<>();
+        Arrays.stream(Rank.values())
+                .forEach(rank -> rankResults.putIfAbsent(rank, 0));
+        return rankResults;
+    }
+
+    private int countMatches(List<Integer> lottoNumbers) {
         return (int) lottoNumbers.stream()
                 .filter(numbers::contains)
                 .count();
-    }
-
-    public boolean contains(int number) {
-        return numbers.contains(number);
     }
 
     private void validateNumberCount(List<Integer> numbers) {

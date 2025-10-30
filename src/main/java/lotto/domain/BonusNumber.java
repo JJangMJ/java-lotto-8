@@ -13,6 +13,10 @@ public class BonusNumber {
         this.number = number;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     private void validateNumberRange(int number) {
         if (number < LOTTO_MIN_NUMBER || number > LOTTO_MAX_NUMBER) {
             throw new IllegalArgumentException(ErrorMessage.BONUS_NUMBER_SHOULD_BE_BETWEEN_1_AND_45.getMessage());

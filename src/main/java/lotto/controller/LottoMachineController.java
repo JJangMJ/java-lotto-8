@@ -1,10 +1,12 @@
 package lotto.controller;
 
 import java.util.List;
+import java.util.Map;
 import lotto.domain.BonusNumber;
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoPurchaseAmount;
 import lotto.domain.Parser;
+import lotto.domain.Rank;
 import lotto.domain.WinningNumbers;
 import lotto.domain.generator.RandomLottoNumberGenerator;
 import lotto.dto.LottoPurchaseResult;
@@ -26,6 +28,8 @@ public class LottoMachineController {
                 LottoPurchaseResult lottoPurchaseResult = purchaseLottos();
                 WinningNumbers winningNumbers = generateWinningNumbers();
                 BonusNumber bonusNumber = generateBonusNumber(winningNumbers);
+                printWinningStatistics(lottoPurchaseResult, winningNumbers, bonusNumber);
+                break;
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }
@@ -49,5 +53,11 @@ public class LottoMachineController {
     private BonusNumber generateBonusNumber(WinningNumbers winningNumbers) {
         int number = Parser.parseBonusNumber(inputView.inputBonusNumber());
         return new BonusNumber(number, winningNumbers);
+    }
+
+    private void printWinningStatistics(LottoPurchaseResult lottoPurchaseResult, WinningNumbers winningNumbers,
+                                        BonusNumber bonusNumber) {
+        Map<Rank, Integer> rankResults = winningNumbers.getRankResults(lottoPurchaseResult, bonusNumber);
+        outputView.printWinningStatistics(rankResults);
     }
 }

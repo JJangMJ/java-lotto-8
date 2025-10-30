@@ -69,7 +69,9 @@ public class WinningNumbersTest {
         //when
         WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
         List<Integer> matchCounts = purchasedLottos.stream()
-                .map(purchasedLotto -> winningNumbers.countMatches(purchasedLotto.getNumbers()))
+                .map(purchasedLotto -> (int) purchasedLotto.getNumbers().stream()
+                        .filter(winningNumbers::contains)
+                        .count())
                 .toList();
 
         //then
