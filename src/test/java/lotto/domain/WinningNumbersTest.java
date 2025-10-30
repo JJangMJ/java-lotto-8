@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lotto.dto.LottoPurchaseResult;
 import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.Test;
@@ -73,5 +74,56 @@ public class WinningNumbersTest {
 
         //then
         assertThat(matchCounts).containsExactly(6, 5, 4, 3, 2, 1, 0);
+    }
+
+    @Test
+    void 등수별_개수를_정확히_누적한다() {
+        // given
+        WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+        BonusNumber bonusNumber = new BonusNumber(7, winningNumbers);
+
+        List<Lotto> purchasedLottos = List.of(
+                new Lotto(List.of(1, 2, 3, 4, 5, 6)),
+                new Lotto(List.of(1, 2, 3, 4, 5, 7)),
+                new Lotto(List.of(1, 2, 3, 4, 5, 8)),
+                new Lotto(List.of(1, 2, 3, 4, 8, 9)),
+                new Lotto(List.of(1, 2, 3, 8, 9, 10)),
+                new Lotto(List.of(1, 2, 8, 9, 10, 11))
+        );
+        LottoPurchaseResult purchaseResult = new LottoPurchaseResult(purchasedLottos.size(), purchasedLottos);
+
+        // when
+        Map<Rank, Integer> rankResults = winningNumbers.getRankResults(purchaseResult, bonusNumber);
+
+        // then
+        assertThat(rankResults.get(Rank.FIRST)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.SECOND)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.THIRD)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.FOURTH)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.FIFTH)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.NOTHING)).isEqualTo(1);
+    }
+
+    @Test
+    void 보너스_일치는_5개_일치일_때만_2등에_영향을_준다() {
+        // given
+        WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+        BonusNumber bonusNumber = new BonusNumber(7, winningNumbers);
+
+        Lotto fiveWithBonus = new Lotto(List.of(1, 2, 3, 4, 5, 7));
+        Lotto sixNumbers = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+        Lotto fourWithBonus = new Lotto(List.of(1, 2, 3, 4, 7, 8));
+
+        LottoPurchaseResult purchaseResult = new LottoPurchaseResult(
+                3, List.of(fiveWithBonus, sixNumbers, fourWithBonus)
+        );
+
+        // when
+        Map<Rank, Integer> rankResults = winningNumbers.getRankResults(purchaseResult, bonusNumber);
+
+        // then
+        assertThat(rankResults.get(Rank.SECOND)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.FIRST)).isEqualTo(1);
+        assertThat(rankResults.get(Rank.FOURTH)).isEqualTo(1);
     }
 }
