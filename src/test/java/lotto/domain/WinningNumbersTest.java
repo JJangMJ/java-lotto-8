@@ -1,8 +1,11 @@
 package lotto.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.ArrayList;
 import java.util.List;
+import lotto.dto.LottoPurchaseResult;
 import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,5 +50,28 @@ public class WinningNumbersTest {
         assertThatThrownBy(() -> new WinningNumbers(Parser.parseWinningNumbers(input)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.WINNING_NUMBERS_SHOULD_BE_NUMBER.getMessage());
+    }
+
+    @Test
+    void 발행된_각_로또가_당첨_번호와_비교해서_몇_개의_번호가_일치하는지_계산한다() {
+        //given
+        List<Lotto> purchasedLottos = new ArrayList<>();
+        purchasedLottos.add(new Lotto(List.of(1, 2, 3, 4, 5, 6)));
+        purchasedLottos.add(new Lotto(List.of(1, 2, 3, 4, 5, 16)));
+        purchasedLottos.add(new Lotto(List.of(1, 2, 3, 4, 15, 16)));
+        purchasedLottos.add(new Lotto(List.of(1, 2, 3, 14, 15, 16)));
+        purchasedLottos.add(new Lotto(List.of(1, 2, 13, 14, 15, 16)));
+        purchasedLottos.add(new Lotto(List.of(1, 12, 13, 14, 15, 16)));
+        purchasedLottos.add(new Lotto(List.of(11, 12, 13, 14, 15, 16)));
+
+
+        //when
+        WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+        List<Integer> matchCounts = purchasedLottos.stream()
+                .map(purchasedLotto -> winningNumbers.countMatches(purchasedLotto))
+                .toList();
+
+        //then
+        assertThat(matchCounts).containsExactly(6, 5, 4, 3, 2, 1, 0);
     }
 }
