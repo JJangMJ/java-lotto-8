@@ -30,7 +30,7 @@ public class WinningNumbers {
         lottoPurchaseResult.purchasedLottos()
                 .forEach(purchasedLotto -> {
                     int matchCount = countMatches(purchasedLotto.getNumbers());
-                    boolean hasBonusNumber = contains(bonusNumber.getNumber());
+                    boolean hasBonusNumber = bonusNumber.isContainedIn(purchasedLotto.getNumbers());
                     Rank rank = Rank.calculateRank(matchCount, hasBonusNumber);
                     rankResults.put(rank, rankResults.get(rank) + 1);
                 });

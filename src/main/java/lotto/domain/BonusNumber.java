@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.util.List;
 import lotto.exception.ErrorMessage;
 
 public class BonusNumber {
@@ -13,8 +14,8 @@ public class BonusNumber {
         this.number = number;
     }
 
-    public int getNumber() {
-        return number;
+    public boolean isContainedIn(List<Integer> numbers) {
+        return numbers.contains(number);
     }
 
     private void validateNumberRange(int number) {
