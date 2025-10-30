@@ -17,6 +17,12 @@ public class WinningNumbers {
         this.numbers = numbers;
     }
 
+    public int countMatches(List<Integer> lottoNumbers) {
+        return (int) lottoNumbers.stream()
+                .filter(numbers::contains)
+                .count();
+    }
+
     public boolean contains(int number) {
         return numbers.contains(number);
     }
