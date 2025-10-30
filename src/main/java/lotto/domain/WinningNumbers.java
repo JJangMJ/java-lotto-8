@@ -17,6 +17,10 @@ public class WinningNumbers {
         this.numbers = numbers;
     }
 
+    public boolean contains(int number) {
+        return numbers.contains(number);
+    }
+
     private void validateNumberCount(List<Integer> numbers) {
         if (numbers.size() != LOTTO_SIZE) {
             throw new IllegalArgumentException(ErrorMessage.WINNING_NUMBERS_SHOULD_BE_SIX_NUMBERS.getMessage());

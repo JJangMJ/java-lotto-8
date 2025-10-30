@@ -13,7 +13,11 @@ public class BonusNumberTest {
     @ParameterizedTest
     @ValueSource(ints = {0, -1, 46, 100})
     void 보너스_번호는_1부터_45_사이여야_한다(int input) {
-        assertThatThrownBy(() -> new BonusNumber(input))
+        //given
+        WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+
+        //when & then
+        assertThatThrownBy(() -> new BonusNumber(input, winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.BONUS_NUMBER_SHOULD_BE_BETWEEN_1_AND_45.getMessage());
     }
@@ -32,7 +36,7 @@ public class BonusNumberTest {
         WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
 
         //when & then
-        assertThatThrownBy(() -> new BonusNumber(1, List.of(1, 2, 3, 4, 5, 6)))
+        assertThatThrownBy(() -> new BonusNumber(1, winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.BONUS_NUMBER_SHOULD_NOT_DUPLICATE_WINNING_NUMBERS.getMessage());
     }

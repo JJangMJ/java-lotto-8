@@ -1,6 +1,5 @@
 package lotto.domain;
 
-import java.util.List;
 import lotto.exception.ErrorMessage;
 
 public class BonusNumber {
@@ -8,9 +7,9 @@ public class BonusNumber {
     private static final int LOTTO_MAX_NUMBER = 45;
     private final int number;
 
-    public BonusNumber(int number, List<Integer> winningNumbers) {
+    public BonusNumber(int number, WinningNumbers winningNumbers) {
         validateNumberRange(number);
-        validateNotDuplicateWith(winningNumbers);
+        validateNotDuplicateWith(number, winningNumbers);
         this.number = number;
     }
 
@@ -20,7 +19,7 @@ public class BonusNumber {
         }
     }
 
-    private void validateNotDuplicateWith(List<Integer> winningNumbers) {
+    private void validateNotDuplicateWith(int number, WinningNumbers winningNumbers) {
         if (winningNumbers.contains(number)) {
             throw new IllegalArgumentException(
                     ErrorMessage.BONUS_NUMBER_SHOULD_NOT_DUPLICATE_WINNING_NUMBERS.getMessage());
