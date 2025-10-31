@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import java.util.Arrays;
 import java.util.List;
 import lotto.exception.ErrorMessage;
 
@@ -40,7 +41,11 @@ public class Parser {
     }
 
     private static void validateSingleNumber(String input) {
-        if (input.length() != BONUS_NUMBER_SIZE) {
+        long count = Arrays.stream(input.split(DELIMITER))
+                .map(String::trim)
+                .filter(string -> !string.isEmpty())
+                .count();
+        if (count != 1) {
             throw new IllegalArgumentException(ErrorMessage.BONUS_NUMBER_SHOULD_BE_SINGLE_NUMBER.getMessage());
         }
     }
