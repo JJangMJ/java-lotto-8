@@ -1,6 +1,5 @@
 package lotto.domain;
 
-import java.util.List;
 import lotto.validator.Validator;
 
 public class BonusNumber {
@@ -12,7 +11,7 @@ public class BonusNumber {
         this.number = number;
     }
 
-    public boolean isContainedIn(List<Integer> numbers) {
-        return numbers.contains(number);
+    public int getNumber() {
+        return number;
     }
 }

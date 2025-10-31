@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import lotto.dto.LottoPurchaseResult;
-import lotto.exception.ErrorMessage;
 import lotto.validator.Validator;
 
 public class WinningNumbers {
@@ -27,8 +25,8 @@ public class WinningNumbers {
         Map<Rank, Integer> rankResults = initializeRankResults();
         lottoPurchaseResult.purchasedLottos()
                 .forEach(purchasedLotto -> {
-                    int matchCount = countMatches(purchasedLotto.getNumbers());
-                    boolean hasBonusNumber = bonusNumber.isContainedIn(purchasedLotto.getNumbers());
+                    int matchCount = purchasedLotto.countMatches(this);
+                    boolean hasBonusNumber = purchasedLotto.contains(bonusNumber);
                     Rank rank = Rank.calculateRank(matchCount, hasBonusNumber);
                     rankResults.put(rank, rankResults.get(rank) + 1);
                 });
@@ -40,11 +38,5 @@ public class WinningNumbers {
         Arrays.stream(Rank.values())
                 .forEach(rank -> rankResults.putIfAbsent(rank, 0));
         return rankResults;
-    }
-
-    private int countMatches(List<Integer> lottoNumbers) {
-        return (int) lottoNumbers.stream()
-                .filter(numbers::contains)
-                .count();
     }
 }
