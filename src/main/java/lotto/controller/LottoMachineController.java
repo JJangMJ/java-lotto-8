@@ -23,41 +23,59 @@ public class LottoMachineController {
     }
 
     public void run() {
+        LottoPurchaseResult lottoPurchaseResult = purchaseLottos();
+        WinningNumbers winningNumbers = generateWinningNumbers();
+        BonusNumber bonusNumber = generateBonusNumber(winningNumbers);
+        printWinningStatistics(lottoPurchaseResult, winningNumbers, bonusNumber);
+    }
+
+    private LottoPurchaseResult purchaseLottos() {
         while (true) {
             try {
-                LottoPurchaseResult lottoPurchaseResult = purchaseLottos();
-                WinningNumbers winningNumbers = generateWinningNumbers();
-                BonusNumber bonusNumber = generateBonusNumber(winningNumbers);
-                printWinningStatistics(lottoPurchaseResult, winningNumbers, bonusNumber);
-                break;
+                LottoPurchaseAmount purchaseAmount = LottoPurchaseAmount.from(inputView.inputLottoPurchasePrice());
+                RandomLottoNumberGenerator randomLottoNumberGenerator = new RandomLottoNumberGenerator();
+                LottoMachine lottoMachine = new LottoMachine(purchaseAmount, randomLottoNumberGenerator);
+                LottoPurchaseResult lottoPurchaseResult = lottoMachine.generateLottos();
+                outputView.printPurchasedLottos(lottoPurchaseResult);
+                return lottoPurchaseResult;
             } catch (IllegalArgumentException exception) {
-                System.out.println(exception.getMessage());
+                outputView.printErrorMessage(exception.getMessage());
             }
         }
     }
 
-    private LottoPurchaseResult purchaseLottos() {
-        LottoPurchaseAmount purchaseAmount = LottoPurchaseAmount.from(inputView.inputLottoPurchasePrice());
-        RandomLottoNumberGenerator randomLottoNumberGenerator = new RandomLottoNumberGenerator();
-        LottoMachine lottoMachine = new LottoMachine(purchaseAmount, randomLottoNumberGenerator);
-        LottoPurchaseResult lottoPurchaseResult = lottoMachine.generateLottos();
-        outputView.printPurchasedLottos(lottoPurchaseResult);
-        return lottoPurchaseResult;
-    }
-
     private WinningNumbers generateWinningNumbers() {
-        List<Integer> numbers = Parser.parseWinningNumbers(inputView.inputWinningNumbers());
-        return new WinningNumbers(numbers);
+        while (true) {
+            try {
+                List<Integer> numbers = Parser.parseWinningNumbers(inputView.inputWinningNumbers());
+                return new WinningNumbers(numbers);
+            } catch (IllegalArgumentException exception) {
+                outputView.printErrorMessage(exception.getMessage());
+            }
+        }
     }
 
     private BonusNumber generateBonusNumber(WinningNumbers winningNumbers) {
-        int number = Parser.parseBonusNumber(inputView.inputBonusNumber());
-        return new BonusNumber(number, winningNumbers);
+        while (true) {
+            try {
+                int number = Parser.parseBonusNumber(inputView.inputBonusNumber());
+                return new BonusNumber(number, winningNumbers);
+            } catch (IllegalArgumentException exception) {
+                outputView.printErrorMessage(exception.getMessage());
+            }
+        }
     }
 
     private void printWinningStatistics(LottoPurchaseResult lottoPurchaseResult, WinningNumbers winningNumbers,
                                         BonusNumber bonusNumber) {
-        Map<Rank, Integer> rankResults = winningNumbers.getRankResults(lottoPurchaseResult, bonusNumber);
-        outputView.printWinningStatistics(rankResults);
+        while (true) {
+            try {
+                Map<Rank, Integer> rankResults = winningNumbers.getRankResults(lottoPurchaseResult, bonusNumber);
+                outputView.printWinningStatistics(rankResults);
+                break;
+            } catch (IllegalArgumentException exception) {
+                outputView.printErrorMessage(exception.getMessage());
+            }
+        }
     }
 }

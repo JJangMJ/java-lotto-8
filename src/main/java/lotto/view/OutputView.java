@@ -20,4 +20,8 @@ public class OutputView {
                 .filter(rank -> rank != Rank.NOTHING)
                 .forEach(rank -> System.out.println(rank.getMatchDescription() + " - " + rankResults.get(rank)));
     }
+
+    public void printErrorMessage(String message) {
+        System.out.println(message);
+    }
 }
