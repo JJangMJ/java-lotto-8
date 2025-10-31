@@ -19,7 +19,7 @@ public class BonusNumberTest {
         //when & then
         assertThatThrownBy(() -> new BonusNumber(input, winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.BONUS_NUMBER_SHOULD_BE_BETWEEN_1_AND_45.getMessage());
+                .hasMessage(ErrorMessage.SHOULD_BE_IN_RANGE.getMessage());
     }
 
     @ParameterizedTest
@@ -27,7 +27,7 @@ public class BonusNumberTest {
     void 보너스_번호가_여러개면_예외_처리한다(String input) {
         assertThatThrownBy(() -> Parser.parseBonusNumber(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.BONUS_NUMBER_SHOULD_BE_SINGLE_NUMBER.getMessage());
+                .hasMessage(ErrorMessage.SHOULD_BE_SINGLE_NUMBER.getMessage());
     }
 
     @Test
@@ -38,6 +38,6 @@ public class BonusNumberTest {
         //when & then
         assertThatThrownBy(() -> new BonusNumber(1, winningNumbers))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.BONUS_NUMBER_SHOULD_NOT_DUPLICATE_WINNING_NUMBERS.getMessage());
+                .hasMessage(ErrorMessage.CANNOT_BE_DUPLICATED_WITH_WINNING_NUMBERS.getMessage());
     }
 }

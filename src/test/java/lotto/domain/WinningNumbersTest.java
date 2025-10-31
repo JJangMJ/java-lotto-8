@@ -19,7 +19,7 @@ public class WinningNumbersTest {
     void 당첨_번호가_공백이면_예외_처리한다(String input) {
         assertThatThrownBy(() -> new WinningNumbers(Parser.parseWinningNumbers(input)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.WINNING_NUMBERS_CANNOT_BE_BLANK.getMessage());
+                .hasMessage(ErrorMessage.CANNOT_BE_BLANK.getMessage());
     }
 
     @ParameterizedTest
@@ -27,7 +27,7 @@ public class WinningNumbersTest {
     void 당첨_번호의_숫자_개수가_6개가_아니면_예외_처리한다(String input) {
         assertThatThrownBy(() -> new WinningNumbers(Parser.parseWinningNumbers(input)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.WINNING_NUMBERS_SHOULD_BE_SIX_NUMBERS.getMessage());
+                .hasMessage(ErrorMessage.SHOULD_BE_SIX_NUMBER.getMessage());
     }
 
     @ParameterizedTest
@@ -35,14 +35,14 @@ public class WinningNumbersTest {
     void 당첨_번호의_각_숫자는_1부터_45_사이여야_한다(String input) {
         assertThatThrownBy(() -> new WinningNumbers(Parser.parseWinningNumbers(input)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.WINNING_NUMBERS_SHOULD_BE_BETWEEN_1_AND_45.getMessage());
+                .hasMessage(ErrorMessage.SHOULD_BE_IN_RANGE.getMessage());
     }
 
     @Test
     void 당첨_번호의_숫자_중_중복_숫자가_있으면_예외_처리한다() {
         assertThatThrownBy(() -> new WinningNumbers(List.of(1, 2, 3, 3, 4, 5)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.WINNING_NUMBERS_CANNOT_BE_DUPLICATED.getMessage());
+                .hasMessage(ErrorMessage.CANNOT_BE_DUPLICATED.getMessage());
     }
 
     @ParameterizedTest
@@ -50,7 +50,7 @@ public class WinningNumbersTest {
     void 숫자가_아닌_값이_있으면_예외(String input) {
         assertThatThrownBy(() -> new WinningNumbers(Parser.parseWinningNumbers(input)))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorMessage.WINNING_NUMBERS_SHOULD_BE_NUMBER.getMessage());
+                .hasMessage(ErrorMessage.SHOULD_BE_NUMBER.getMessage());
     }
 
     @Test
