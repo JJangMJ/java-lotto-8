@@ -1,13 +1,12 @@
 package lotto.controller;
 
 import java.util.List;
-import java.util.Map;
 import lotto.domain.BonusNumber;
 import lotto.domain.LottoMachine;
 import lotto.domain.LottoPurchaseAmount;
 import lotto.domain.Parser;
-import lotto.domain.Rank;
 import lotto.domain.WinningNumbers;
+import lotto.dto.WinningStatistic;
 import lotto.domain.generator.RandomLottoNumberGenerator;
 import lotto.dto.LottoPurchaseResult;
 import lotto.view.InputView;
@@ -70,8 +69,8 @@ public class LottoMachineController {
                                         BonusNumber bonusNumber) {
         while (true) {
             try {
-                Map<Rank, Integer> rankResults = winningNumbers.getRankResults(lottoPurchaseResult, bonusNumber);
-                outputView.printWinningStatistics(rankResults);
+                WinningStatistic winningStatistic = winningNumbers.getWinningStatistic(lottoPurchaseResult, bonusNumber);
+                outputView.printWinningStatistic(winningStatistic);
                 break;
             } catch (IllegalArgumentException exception) {
                 outputView.printErrorMessage(exception.getMessage());

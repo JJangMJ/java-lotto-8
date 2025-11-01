@@ -33,4 +33,8 @@ public enum Rank {
     public String getMatchDescription() {
         return matchDescription;
     }
+
+    public int getPrize() {
+        return prize;
+    }
 }

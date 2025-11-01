@@ -1,8 +1,8 @@
 package lotto.view;
 
 import java.util.Arrays;
-import java.util.Map;
 import lotto.domain.Rank;
+import lotto.dto.WinningStatistic;
 import lotto.dto.LottoPurchaseResult;
 
 public class OutputView {
@@ -13,12 +13,15 @@ public class OutputView {
         System.out.println();
     }
 
-    public void printWinningStatistics(Map<Rank, Integer> rankResults) {
+    public void printWinningStatistic(WinningStatistic winningStatistic) {
         System.out.println("당첨 통계");
         System.out.println("---");
         Arrays.stream(Rank.values())
                 .filter(rank -> rank != Rank.NOTHING)
-                .forEach(rank -> System.out.println(rank.getMatchDescription() + " - " + rankResults.get(rank)));
+                .forEach(rank -> System.out.println(
+                        rank.getMatchDescription() + " - " + winningStatistic.rankResults().get(rank)
+                ));
+        System.out.println("총 수익률은 " + winningStatistic.profitRate() + "%입니다.");
     }
 
     public void printErrorMessage(String message) {
