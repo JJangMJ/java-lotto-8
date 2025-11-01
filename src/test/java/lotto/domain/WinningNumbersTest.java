@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import lotto.dto.LottoPurchaseResult;
+import lotto.dto.WinningStatistic;
 import lotto.exception.ErrorMessage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,7 +65,6 @@ public class WinningNumbersTest {
         purchasedLottos.add(new Lotto(List.of(1, 12, 13, 14, 15, 16)));
         purchasedLottos.add(new Lotto(List.of(11, 12, 13, 14, 15, 16)));
 
-
         //when
         WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
         List<Integer> matchCounts = purchasedLottos.stream()
@@ -95,15 +94,15 @@ public class WinningNumbersTest {
         LottoPurchaseResult purchaseResult = new LottoPurchaseResult(purchasedLottos.size(), purchasedLottos);
 
         // when
-        Map<Rank, Integer> rankResults = winningNumbers.getRankResults(purchaseResult, bonusNumber);
+        WinningStatistic winningStatistic = winningNumbers.getWinningStatistic(purchaseResult, bonusNumber);
 
         // then
-        assertThat(rankResults.get(Rank.FIRST)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.SECOND)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.THIRD)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.FOURTH)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.FIFTH)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.NOTHING)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.FIRST)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.SECOND)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.THIRD)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.FOURTH)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.FIFTH)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.NOTHING)).isEqualTo(1);
     }
 
     @Test
@@ -121,11 +120,68 @@ public class WinningNumbersTest {
         );
 
         // when
-        Map<Rank, Integer> rankResults = winningNumbers.getRankResults(purchaseResult, bonusNumber);
+        WinningStatistic winningStatistic = winningNumbers.getWinningStatistic(purchaseResult, bonusNumber);
 
         // then
-        assertThat(rankResults.get(Rank.SECOND)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.FIRST)).isEqualTo(1);
-        assertThat(rankResults.get(Rank.FOURTH)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.SECOND)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.FIRST)).isEqualTo(1);
+        assertThat(winningStatistic.rankResults().get(Rank.FOURTH)).isEqualTo(1);
+    }
+
+    @Test
+    void 등수별_당첨_개수를_기준으로_총_당첨_상금을_계산한다() {
+        //given
+        WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+        BonusNumber bonusNumber = new BonusNumber(7, winningNumbers);
+
+        List<Lotto> purchasedLottos = List.of(
+                new Lotto(List.of(1, 2, 3, 4, 5, 6)),
+                new Lotto(List.of(1, 2, 3, 4, 5, 7)),
+                new Lotto(List.of(1, 2, 3, 4, 5, 8)),
+                new Lotto(List.of(1, 2, 3, 4, 8, 9)),
+                new Lotto(List.of(1, 2, 3, 8, 9, 10)),
+                new Lotto(List.of(1, 2, 8, 9, 10, 11))
+        );
+        LottoPurchaseResult purchaseResult = new LottoPurchaseResult(purchasedLottos.size(), purchasedLottos);
+
+        //when
+        WinningStatistic winningStatistic = winningNumbers.getWinningStatistic(purchaseResult, bonusNumber);
+        int expectedTotalPrize = Rank.FIRST.getPrize() + Rank.SECOND.getPrize()
+                + Rank.THIRD.getPrize() + Rank.FOURTH.getPrize()
+                + Rank.FIFTH.getPrize() + Rank.NOTHING.getPrize();
+        int actualTotalPrize = winningStatistic.rankResults().entrySet().stream()
+                .mapToInt(value -> value.getKey().getPrize() * value.getValue())
+                .sum();
+
+        //then
+        assertThat(expectedTotalPrize).isEqualTo(actualTotalPrize);
+    }
+
+    @Test
+    void 총_당첨된_상금과_구입_금액을_비교하여_수익률을_계산한다() {
+        //given
+        WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+        BonusNumber bonusNumber = new BonusNumber(7, winningNumbers);
+
+        List<Lotto> purchasedLottos = List.of(
+                new Lotto(List.of(1, 2, 3, 4, 5, 45)),
+                new Lotto(List.of(10, 11, 12, 13, 14, 15)),
+                new Lotto(List.of(16, 17, 18, 19, 20, 21)),
+                new Lotto(List.of(22, 23, 24, 25, 26, 27)),
+                new Lotto(List.of(28, 29, 30, 31, 32, 33)),
+                new Lotto(List.of(34, 35, 36, 37, 38, 39)),
+                new Lotto(List.of(40, 41, 42, 43, 44, 45)),
+                new Lotto(List.of(8, 9, 10, 11, 12, 13))
+        );
+        LottoPurchaseResult purchaseResult = new LottoPurchaseResult(purchasedLottos.size(), purchasedLottos);
+
+        // when
+        WinningStatistic stat = winningNumbers.getWinningStatistic(purchaseResult, bonusNumber);
+
+        // then
+        double expectedTotalPrize = Rank.THIRD.getPrize();
+        double expectedProfitRate = Math.round((expectedTotalPrize / purchaseResult.purchaseCount())) / 10.0;
+
+        assertThat(stat.profitRate()).isEqualTo(expectedProfitRate);
     }
 }
