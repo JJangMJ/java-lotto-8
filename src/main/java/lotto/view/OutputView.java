@@ -19,7 +19,7 @@ public class OutputView {
         Arrays.stream(Rank.values())
                 .filter(rank -> rank != Rank.NOTHING)
                 .forEach(rank -> System.out.println(
-                        rank.getMatchDescription() + " - " + winningStatistic.rankResults().get(rank)
+                        rank.getMatchDescription() + " - " + winningStatistic.rankResults().get(rank) + "개"
                 ));
         System.out.println("총 수익률은 " + winningStatistic.profitRate() + "%입니다.");
     }
